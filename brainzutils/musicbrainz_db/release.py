@@ -160,7 +160,8 @@ def get_release_for_label(label_id, limit=None, offset=None):
 
     label_id = str(label_id)
     with mb_session() as db:
-        release_query = db.query(models.Release).join(models.ReleaseMeta).\
+        release_query = db.query(models.Release).options(joinedload('meta')).\
+            join(models.ReleaseMeta).\
             join(models.ReleaseLabel, models.ReleaseLabel.release_id == models.Release.id).\
             join(models.Label, models.Label.id == models.ReleaseLabel.label_id).\
             filter(models.Label.gid == label_id)
