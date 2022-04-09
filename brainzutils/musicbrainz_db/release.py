@@ -1,4 +1,5 @@
 from collections import defaultdict
+from re import A
 from mbdata import models
 from sqlalchemy.orm import joinedload
 from brainzutils.musicbrainz_db import exceptions as mb_exceptions
@@ -159,13 +160,13 @@ def get_release_for_label(label_id, limit=None, offset=None):
 
     label_id = str(label_id)
     with mb_session() as db:
-        releases = db.query(models.Release).\
+        release_query = db.query(models.Release).\
             join(models.ReleaseLabel, models.ReleaseLabel.release_id == models.Release.id).\
             join(models.Label, models.Label.id == models.ReleaseLabel.label_id).\
-            filter(models.Label.gid == label_id).\
-            limit(limit).offset(offset).all()
-        
-        count = releases.count()
+            filter(models.Label.gid == label_id)
+            
+        count = release_query.count()
 
+        releases = release_query.limit(limit).offset(offset).all()
         serial_releases = ([serialize_releases(release) for release in releases], count)
         return serial_releases
