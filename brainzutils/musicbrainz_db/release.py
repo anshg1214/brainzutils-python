@@ -159,6 +159,7 @@ def get_releases_using_recording_mbid(recording_mbid):
 def get_release_for_label(label_id, limit=None, offset=None):
 
     label_id = str(label_id)
+    includes_data = defaultdict(dict)
     with mb_session() as db:
         release_query = db.query(models.Release).options(joinedload('meta')).\
             join(models.ReleaseMeta).\
@@ -169,5 +170,9 @@ def get_release_for_label(label_id, limit=None, offset=None):
         count = release_query.count()
 
         releases = release_query.limit(limit).offset(offset).all()
-        serial_releases = ([serialize_releases(release) for release in releases], count)
+
+        for release in releases:
+            includes_data[release.id]['meta'] = release.meta
+
+        serial_releases = ([serialize_releases(release,  includes_data[release.id]) for release in releases], count)
         return serial_releases
