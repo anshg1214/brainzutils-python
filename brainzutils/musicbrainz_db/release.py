@@ -153,3 +153,18 @@ def get_releases_using_recording_mbid(recording_mbid):
             raise mb_exceptions.NoDataFoundException("Couldn't find release for recording with MBID: %s." % str(recording_mbid))
 
         return serial_releases
+
+def get_release_for_label(label_id, limit=None, offset=None):
+
+    label_id = str(label_id)
+    with mb_session() as db:
+        release_query = db.query(models.Release).\
+            join(models.ReleaseLabel, models.ReleaseLabel.release_id == models.Release.id).\
+            join(models.Label, models.Label.id == models.ReleaseLabel.label_id).\
+            filter(models.Label.gid == label_id)
+        
+        count = release_query.count()
+        releases = release_query.limit(limit).offset(offset).all()
+
+        serial_releases = ([serialize_releases(release) for release in releases], count)
+        return serial_releases
