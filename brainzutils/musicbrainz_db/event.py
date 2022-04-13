@@ -115,10 +115,8 @@ def get_event_for_place(place_id, limit=None, offset=None):
             filter(models.Place.gid == place_id)
         
         count = event_query.count()
-        events = event_query.order_by(
-            case([(models.Event.begin_date.is_(None), 1)], else_=0),
-            models.Event.begin_date.desc()).\
-            limit(limit).offset(offset).all()
+        events = event_query.order_by(models.Event.begin_date_year.desc()).\
+        limit(limit).offset(offset).all()
         
         event_ids = [event[0] for event in events]
     
