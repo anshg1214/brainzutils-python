@@ -122,4 +122,5 @@ def get_event_for_place(place_id, limit=None, offset=None):
         # event_ids = [event[0] for event in events]
     
     # event = fetch_multiple_events(event_ids)
+    events = ([serialize_events(event) for event in events], count)
     return events, count
