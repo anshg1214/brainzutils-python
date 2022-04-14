@@ -109,16 +109,17 @@ def get_event_for_place(place_id, limit=None, offset=None):
 
     place_id = str(place_id)
     with mb_session() as db:
-        event_query = db.query(models.Event.gid).\
+        event_query = db.query(models.Event).\
             join(models.LinkEventPlace, models.Event.id == models.LinkEventPlace.entity0_id).\
             join(models.Place, models.LinkEventPlace.entity1_id == models.Place.id).\
             filter(models.Place.gid == place_id)
         
         count = event_query.count()
-        events = event_query.order_by(models.Event.begin_date_year.desc()).\
-        limit(limit).offset(offset).all()
+        # events = event_query.order_by(models.Event.begin_date_year.desc()).\
+        # limit(limit).offset(offset).all()
+        events = event_query.limit(limit).offset(offset).all()
         
-        event_ids = [event[0] for event in events]
+        # event_ids = [event[0] for event in events]
     
-    event = fetch_multiple_events(event_ids)
-    return event, count
+    # event = fetch_multiple_events(event_ids)
+    return events, count
