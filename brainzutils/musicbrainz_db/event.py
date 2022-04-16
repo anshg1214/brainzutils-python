@@ -110,7 +110,7 @@ def get_event_for_place(place_id, event_types, limit=None, offset=None):
         event_query = db.query(models.Event.gid).join(models.EventType).\
             join(models.LinkEventPlace, models.Event.id == models.LinkEventPlace.entity0_id).\
             join(models.Place, models.LinkEventPlace.entity1_id == models.Place.id).\
-            filter(models.Place.gid == place_id).filter(models.EventType.in_(event_types)).\
+            filter(models.Place.gid == place_id).filter(models.EventType.name.in_(event_types)).\
             order_by(models.Event.begin_date_year.desc())
 
         count = event_query.count()
