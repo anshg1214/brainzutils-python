@@ -115,6 +115,7 @@ def get_event_for_place(place_id, event_types, limit=None, offset=None):
 
         count = event_query.count()
         events = event_query.limit(limit).offset(offset).all()
+        print(events)
         event_ids = [event[0] for event in events]
 
     event = fetch_multiple_events(event_ids)
