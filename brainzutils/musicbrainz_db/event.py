@@ -133,7 +133,7 @@ def get_event_for_place(place_id, event_types=None, limit=None, offset=None):
             filter(models.Place.gid == place_id).filter(models.EventType.name.in_(event_types))
 
         if 'None' in event_types:
-            event_query = event_query.filter(models.Event.type.is_(None))
+            event_query = event_query.filter(models.Event.type == None)
         
         event_query = event_query.order_by(models.Event.begin_date_year.desc())
         count = event_query.count()
