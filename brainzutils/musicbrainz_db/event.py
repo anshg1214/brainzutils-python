@@ -122,7 +122,7 @@ def get_event_for_place(place_id, event_types=None, limit=None, offset=None):
         'launch event': 'Launch event',
         'masterclass/clinic': 'Masterclass/Clinic',
         'stage performance': 'Stage performance',
-        'none': None,
+        'none': 'None',
     }
     event_types = [event_types_mapping[event_type] for event_type in event_types]
 
@@ -130,9 +130,12 @@ def get_event_for_place(place_id, event_types=None, limit=None, offset=None):
         event_query = db.query(models.Event).join(models.EventType).\
             join(models.LinkEventPlace, models.Event.id == models.LinkEventPlace.entity0_id).\
             join(models.Place, models.LinkEventPlace.entity1_id == models.Place.id).\
-            filter(models.Place.gid == place_id).filter(models.EventType.name.in_(event_types)).\
-            order_by(models.Event.begin_date_year.desc())
+            filter(models.Place.gid == place_id).filter(models.EventType.name.in_(event_types))
 
+        if 'None' in event_types:
+            event_query = event_query.filter(models.Event.type.is_(None))
+        
+        event_query = event_query.order_by(models.Event.begin_date_year.desc())
         count = event_query.count()
         events = event_query.limit(limit).offset(offset).all()
 
