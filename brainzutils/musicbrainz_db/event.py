@@ -122,6 +122,7 @@ def get_event_for_place(place_id, event_types=None, limit=None, offset=None):
         'launch event': 'Launch event',
         'masterclass/clinic': 'Masterclass/Clinic',
         'stage performance': 'Stage performance',
+        'none': None,
     }
     event_types = [event_types_mapping[event_type] for event_type in event_types]
 
