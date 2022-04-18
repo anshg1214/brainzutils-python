@@ -128,7 +128,7 @@ def get_event_for_place(place_id, event_types=None, limit=None, offset=None):
     event_types = [event_types_mapping[event_type] for event_type in event_types]
 
     with mb_session() as db:
-        event_query = db.query(models.Event).join(models.Event, models.EventType, models.Event.type == models.EventType.id, isouter=True).\
+        event_query = db.query(models.Event).outerjoin(models.EventType).\
             join(models.LinkEventPlace, models.Event.id == models.LinkEventPlace.entity0_id).\
             join(models.Place, models.LinkEventPlace.entity1_id == models.Place.id).\
             filter(models.Place.gid == place_id)
