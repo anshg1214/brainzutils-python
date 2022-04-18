@@ -134,11 +134,11 @@ def get_event_for_place(place_id, event_types=None, limit=None, offset=None):
             filter(models.Place.gid == place_id)
         
 
-        print("1 -> ", event_query)
+        print("1 -> ", event_query.all())
             
         event_query = event_query.filter(models.Event.type == None)
 
-        print("2 -> ", event_query)
+        print("2 -> ", event_query.all())
         # if 'None' in event_types:
         #     event_query = event_query.filter(or_(models.Event.type == None, models.EventType.name.in_(event_types)))
         # else:
