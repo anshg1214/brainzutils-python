@@ -131,8 +131,14 @@ def get_event_for_place(place_id, event_types=None, limit=None, offset=None):
         event_query = db.query(models.Event).join(models.EventType).\
             join(models.LinkEventPlace, models.Event.id == models.LinkEventPlace.entity0_id).\
             join(models.Place, models.LinkEventPlace.entity1_id == models.Place.id).\
-            filter(models.Place.gid == place_id).filter(models.Event.type == null())
+            filter(models.Place.gid == place_id)
+        
 
+        print("1 -> ", event_query)
+            
+        event_query = event_query.filter(models.Event.type == None)
+
+        print("2 -> ", event_query)
         # if 'None' in event_types:
         #     event_query = event_query.filter(or_(models.Event.type == None, models.EventType.name.in_(event_types)))
         # else:
