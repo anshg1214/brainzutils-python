@@ -143,7 +143,7 @@ def get_event_for_place(place_id, event_types=None, limit=None, offset=None):
         else:
             event_query = event_query.filter(models.EventType.name.in_(event_types))
         
-        event_query = event_query.order_by(models.Event.begin_date_year.desc())
+        event_query = event_query.order_by(models.Event.begin_date.desc())
         count = event_query.count()
         events = event_query.limit(limit).offset(offset).all()
 
