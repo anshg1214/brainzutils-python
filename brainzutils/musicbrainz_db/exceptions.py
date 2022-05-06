@@ -12,6 +12,9 @@ class InvalidIncludeError(MBDatabaseException):
     """Exception related to wrong includes in present functions"""
     pass
 
+class InvalidReleaseTypesError(MBDatabaseException):
+    """Exception related to wrong release types in present functions"""
+    pass
 
 class NoDataFoundException(MBDatabaseException):
     """Exception to be raised when no data has been found"""
