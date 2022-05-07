@@ -220,6 +220,11 @@ def get_release_groups_for_label(label_id, release_types=None, limit=None, offse
             nullslast(models.ReleaseGroup.name.asc())
         ).limit(limit).offset(offset).all()
 
+        print("limit =>", limit)
+        print("offset =>", offset)
+        print("count =>", count)
+        print("release_groups =>", release_groups)
+
         for release_group in release_groups:
             includes_data[release_group.id]['meta'] = release_group.meta
         release_groups = [serialize_release_groups(release_group, includes_data[release_group.id])
